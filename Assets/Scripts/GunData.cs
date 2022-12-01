@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class GunData
+[CreateAssetMenu(fileName = "GunData", menuName = "Scriptable/GunData")]
+public class GunData : ScriptableObject
 {
-    public AudioClip shotClip; // 발사 소리
-    public AudioClip reloadClip; // 재장전 소리
+    public Sfx shotSfx; // 발사 소리
+    public Sfx reloadSfx; // 재장전 소리
 
     public float damage = 25; // 공격력
 

@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
-public class SfxAudio : MonoBehaviour
+public enum Sfx
 {
-    void Awake()
-    {
-        audioSource = GetComponent<AudioSource>();
-    }
+    GunShoot, GunReload
+}
 
-    AudioSource audioSource;
+public class SfxAudio : BaseAudio
+{
+    public void Play(Sfx sfxName, float volumeScale = 1f)
+    {
+        if (audioSource == null) return;
+        audioSource.PlayOneShot(clips[(int)sfxName], volumeScale);
+    }
 }

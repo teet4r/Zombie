@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         Move();
-        Rotate();
+        //Rotate();
 
         animator.SetFloat(moveHash, playerInput.move);
     }
@@ -34,16 +34,11 @@ public class PlayerMovement : MonoBehaviour
         // transform.position += moveDistance; 로 하지 않은 이유: 물리 처리를 무시하게 됨
     }
 
-    // 입력값에 따라 캐릭터를 좌우로 회전
-    void Rotate()
-    {
-        /*var worldMousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Debug.Log(Input.mousePosition);
-        Debug.Log(worldMousePoint);
-        transform.rotation = Quaternion.Euler(new Vector3(worldMousePoint.x, 1f, worldMousePoint.z));*/
-        //transform.LookAt(new Vector3(worldMousePoint.x - Camera.main.transform.rotation.x, worldMousePoint.y - Camera.main.transform.rotation.y, 1f));
-        //var turnDistance = playerInput.rotate * rotateSpeed * Time.fixedDeltaTime;
-    }
+    //void Rotate()
+    //{
+    //    var turnDistance = playerInput.rotate * rotateSpeed * Time.fixedDeltaTime;
+    //    rigid.rotation *= Quaternion.Euler(0f, turnDistance, 0f);
+    //}
 
     public float moveSpeed = 5f; // 앞뒤 움직임의 속도
     public float rotateSpeed = 180f; // 좌우 회전 속도
