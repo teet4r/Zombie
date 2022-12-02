@@ -74,10 +74,10 @@ public class Gun : MonoBehaviour
     // 발사 이펙트와 소리를 재생하고 탄알 궤적을 그림
     IEnumerator ShotEffect(Vector3 hitPosition)
     {
-        ObjectPool.instance.GetMuzzleFlashEffect().particleSystem.Play();
-        ObjectPool.instance.GetShellEjectEffect().particleSystem.Play();
+        muzzleFlashEffect.Play();
+        shellEjectEffect.Play();
 
-        SoundManager.instace.sfxAudio.Play(gunData.shotSfx);
+        SoundManager.instance.sfxAudio.Play(gunData.sfxShot);
 
         // 선의 시작점은 총구의 위치
         bulletLineRenderer.SetPosition(0, fireTransform.position);
@@ -97,7 +97,7 @@ public class Gun : MonoBehaviour
     {
         // 현재 상태를 재장전 중 상태로 전환
         state = State.Reloading;
-        SoundManager.instace.sfxAudio.Play(gunData.reloadSfx);
+        SoundManager.instance.sfxAudio.Play(gunData.sfxReload);
 
         // 재장전 소요 시간 만큼 처리 쉬기
         yield return new WaitForSeconds(gunData.reloadTime);
@@ -123,10 +123,11 @@ public class Gun : MonoBehaviour
     }
 
     public State state { get; private set; } // 현재 총의 상태
-
     public Transform fireTransform; // 탄알이 발사될 위치
-
     public GunData gunData; // 총의 현재 데이터
+    public ParticleSystem muzzleFlashEffect;
+    public ParticleSystem shellEjectEffect;
+    
     public int ammoRemain = 100; // 남은 전체 탄알
     public int magAmmo; // 현재 탄알집에 남아 있는 탄알
 

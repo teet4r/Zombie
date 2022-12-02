@@ -23,13 +23,16 @@ public class PlayerMovement : MonoBehaviour
         Move();
         //Rotate();
 
-        animator.SetFloat(moveHash, playerInput.move);
+        if (playerInput.fbMove == 0f)
+            animator.SetFloat(moveHash, playerInput.lrMove);
+        else
+            animator.SetFloat(moveHash, playerInput.fbMove);
     }
 
     // 입력값에 따라 캐릭터를 앞뒤로 움직임
     void Move()
     {
-        var moveDistance = playerInput.move * transform.forward * moveSpeed * Time.fixedDeltaTime;
+        var moveDistance = (playerInput.fbMove * Vector3.forward + playerInput.lrMove * Vector3.right).normalized * moveSpeed * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + moveDistance); // 전역 위치로 이동시켜주는 함수
         // transform.position += moveDistance; 로 하지 않은 이유: 물리 처리를 무시하게 됨
     }
