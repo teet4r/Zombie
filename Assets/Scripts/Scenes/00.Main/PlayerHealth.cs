@@ -4,10 +4,8 @@ using UnityEngine.UI; // UI 관련 코드
 // 플레이어 캐릭터의 생명체로서의 동작을 담당
 public class PlayerHealth : LivingEntity
 {
-    protected override void Awake()
+    void Awake()
     {
-        base.Awake();
-
         animator = GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
         playerShooter = GetComponent<PlayerShooter>();
@@ -60,6 +58,8 @@ public class PlayerHealth : LivingEntity
 
         playerMovement.enabled = false;
         playerShooter.enabled = false;
+
+        EnableColliders(false);
     }
 
     void OnTriggerEnter(Collider other)

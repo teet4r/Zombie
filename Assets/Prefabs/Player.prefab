@@ -308,6 +308,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingHealth: 100
+  enableColliders:
+  - {fileID: 4008910901472660857}
   healthSlider: {fileID: 4008910903348299970}
 --- !u!1 &4008910901482242019
 GameObject:

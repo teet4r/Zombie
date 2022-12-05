@@ -44,7 +44,7 @@ public class ZombieSpawner : MonoBehaviour
     void CreateZombie()
     {
         var spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-        var zombie = ObjectPool.instance.GetLivingEntity<Zombie>() as Zombie;
+        var zombie = ObjectPool.instance.GetZombie();
         zombie.transform.position = spawnPoint.position;
         zombie.transform.rotation = spawnPoint.rotation;
         zombie.Setup(zombieDatas[Random.Range(0, zombieDatas.Length)]);

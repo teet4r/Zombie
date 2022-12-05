@@ -10,7 +10,8 @@ public class ObjectPool : MonoBehaviour
         instance = this;
     }
 
-    /*public Zombie GetZombie()
+    #region Zombie
+    public Zombie GetZombie()
     {
         if (zombieQ.Count == 0)
         {
@@ -19,7 +20,7 @@ public class ObjectPool : MonoBehaviour
             return zombie;
         }
         return zombieQ.Dequeue();
-    }*/
+    }
 
     public void ReturnZombie(Zombie zombie, float time)
     {
@@ -33,36 +34,13 @@ public class ObjectPool : MonoBehaviour
         zombie.gameObject.SetActive(false);
         zombieQ.Enqueue(zombie);
     }
-
-    public LivingEntity GetLivingEntity<T>()
-    {
-        var type = typeof(T);
-        if (type != typeof(LivingEntity))
-            return null;
-        if (!dictionary.ContainsKey(type))
-            dictionary[type] = new Queue<LivingEntity>();
-        if (dictionary[type].Count == 0)
-        {
-            var obj = Instantiate(prefabs[0]);
-            obj.gameObject.SetActive(false);
-            return obj;
-        }
-        return dictionary[type].Dequeue();
-    }
-
-    public void ReturnLivingEntity(LivingEntity livingEntity)
-    {
-        if (livingEntity == null) return;
-        livingEntity.gameObject.SetActive(false);
-        dictionary[typeof(LivingEntity)].Enqueue(livingEntity);
-    }
+    #endregion
 
     public static ObjectPool instance = null;
 
     [Header("Prefabs")]
     [SerializeField]
-    LivingEntity[] prefabs;
+    Zombie zombiePrefab;
 
     Queue<Zombie> zombieQ = new Queue<Zombie>();
-    Dictionary<Type, Queue<LivingEntity>> dictionary = new Dictionary<Type, Queue<LivingEntity>>();
 }

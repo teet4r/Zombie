@@ -5,10 +5,8 @@ using UnityEngine.AI; // AI, 내비게이션 시스템 관련 코드 가져오�
 // 좀비 AI 구현
 public class Zombie : LivingEntity
 {
-    protected override void Awake()
+    void Awake()
     {
-        base.Awake();
-
         // 초기화
         navMeshAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();

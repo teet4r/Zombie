@@ -205,13 +205,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingHealth: 100
+  enableColliders:
+  - {fileID: 5944675522560446130}
+  - {fileID: 5944675522560446129}
   damage: 20
   timeBetAttack: 0.5
   whatIsTarget:
     serializedVersion: 2
     m_Bits: 512
   hitEffect: {fileID: 5818884992577664686}
-  renderer: {fileID: 5944675522574140692}
+  m_renderer: {fileID: 5944675522574140692}
   updatePathRate: 0.25
 --- !u!1001 &5944675522560308000
 PrefabInstance:
