@@ -17,9 +17,9 @@ public class UIManager : MonoBehaviour
     }
 
     // 점수 텍스트 갱신
-    public void UpdateScoreText(int newScore)
+    public void UpdateScoreText(int score)
     {
-        scoreText.text = "Score : " + newScore;
+        scoreText.text = "Score : " + score;
     }
 
     // 적 웨이브 텍스트 갱신

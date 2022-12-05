@@ -4,8 +4,10 @@ using UnityEngine.UI; // UI 관련 코드
 // 플레이어 캐릭터의 생명체로서의 동작을 담당
 public class PlayerHealth : LivingEntity
 {
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         animator = GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
         playerShooter = GetComponent<PlayerShooter>();

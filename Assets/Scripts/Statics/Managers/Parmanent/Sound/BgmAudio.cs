@@ -9,7 +9,7 @@ public enum Bgm
 
 public class BgmAudio : BaseAudio
 {
-    protected override void Start()
+    void Start()
     {
         Play(Bgm.Bgm1);
     }

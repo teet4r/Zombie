@@ -5,6 +5,11 @@ using UnityEngine;
 // 체력, 데미지 받아들이기, 사망 기능, 사망 이벤트를 제공
 public class LivingEntity : MonoBehaviour, IDamageable
 {
+    protected virtual void Awake()
+    {
+        colliders = GetComponents<Collider>();
+    }
+
     // 생명체가 활성화될때 상태를 리셋
     protected virtual void OnEnable()
     {
@@ -12,6 +17,8 @@ public class LivingEntity : MonoBehaviour, IDamageable
         dead = false;
         // 체력을 시작 체력으로 초기화
         health = startingHealth;
+
+        EnableColliders(true);
     }
 
     // 데미지를 입는 기능
@@ -46,8 +53,16 @@ public class LivingEntity : MonoBehaviour, IDamageable
         dead = true;
     }
 
+    public void EnableColliders(bool on)
+    {
+        for (int i = 0; i < colliders.Length; i++)
+            colliders[i].enabled = on;
+    }
+
     public float startingHealth = 100f; // 시작 체력
     public float health { get; protected set; } // 현재 체력
     public bool dead { get; protected set; } // 사망 상태
     public event Action onDeath; // 사망시 발동할 이벤트
+
+    Collider[] colliders;
 }

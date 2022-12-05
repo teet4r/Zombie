@@ -4,7 +4,10 @@ using UnityEngine;
 
 public enum Sfx
 {
-    GunShoot, GunReload, PlayerDamaged, PlayerDie, ItemPickUp
+    GunShoot, GunReload,
+    PlayerDamaged, PlayerDie,
+    ZombieDamaged, ZombieDie,
+    ItemPickUp
 }
 
 public class SfxAudio : BaseAudio

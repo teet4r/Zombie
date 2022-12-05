@@ -12,8 +12,6 @@ public  class BaseAudio : MonoBehaviour
         audioSource.playOnAwake = false;
     }
 
-    protected virtual void Start() { }
-
     public bool mute
     {
         get { return audioSource.mute; }

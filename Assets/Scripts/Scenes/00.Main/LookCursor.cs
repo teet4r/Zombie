@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LookCursor : MonoBehaviour
 {
-    void Start()
+    void OnEnable()
     {
         if (currentCamera == null)
             currentCamera = Camera.main;
