@@ -3,7 +3,7 @@ using UnityEngine;
 
 // 생명체로서 동작할 게임 오브젝트들을 위한 뼈대를 제공
 // 체력, 데미지 받아들이기, 사망 기능, 사망 이벤트를 제공
-public class LivingEntity : MonoBehaviour, IDamageable
+public class LivingEntity : PoolObject, IDamageable
 {
     // 생명체가 활성화될때 상태를 리셋
     protected virtual void OnEnable()

@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
 {
     void Awake()
     {
+        instance = this;
+
         playerInput = GetComponent<PlayerInput>();
         rigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
@@ -67,6 +69,8 @@ public class PlayerMovement : MonoBehaviour
     //    var turnDistance = playerInput.rotate * rotateSpeed * Time.fixedDeltaTime;
     //    rigid.rotation *= Quaternion.Euler(0f, turnDistance, 0f);
     //}
+
+    public static PlayerMovement instance = null;
 
     public float moveSpeed = 5f; // 앞뒤 움직임의 속도
     public float rotateSpeed = 180f; // 좌우 회전 속도

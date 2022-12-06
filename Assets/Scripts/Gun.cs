@@ -52,7 +52,7 @@ public class Gun : MonoBehaviour
 
         // Raycast(시작 지점, 방향, 충돌 정보 컨테이너, 사정거리)
         // 레이가 어떤 물체와 충돌한 경우
-        if (Physics.Raycast(fireTransform.position, fireTransform.forward, out hit, fireDistance))
+        if (Physics.Raycast(fireTransform.position, (PlayerMovement.instance.lookingPoint - fireTransform.position).normalized, out hit, fireDistance))
         {
             // 충돌한 상대방으로부터 IDamageable 오브젝트 가져오기 시도
             if (hit.collider.TryGetComponent(out IDamageable target))
@@ -63,7 +63,8 @@ public class Gun : MonoBehaviour
         // 레이가 다른 물체와 충돌하지 않았다면
         // 탄알이 최대 사정거리까지 날아갔을 때의 위치를 충돌 위치로 사용
         else
-            hitPosition = fireTransform.position + fireTransform.forward * fireDistance;
+            hitPosition = (PlayerMovement.instance.lookingPoint - fireTransform.position).normalized * fireDistance;
+        //hitPosition = fireTransform.position + fireTransform.forward * fireDistance;
 
         StartCoroutine(ShotEffect(hitPosition));
         magAmmo--;
@@ -128,11 +129,11 @@ public class Gun : MonoBehaviour
     public ParticleSystem muzzleFlashEffect;
     public ParticleSystem shellEjectEffect;
     
+    [Header("Gun Info")]
     public int ammoRemain = 100; // 남은 전체 탄알
     public int magAmmo; // 현재 탄알집에 남아 있는 탄알
-
+    public float fireDistance = 50f; // 사정거리
+    
     LineRenderer bulletLineRenderer; // 탄알 궤적을 그리기 위한 렌더러
-
-    float fireDistance = 50f; // 사정거리
     float lastFireTime; // 총을 마지막으로 발사한 시점
 }

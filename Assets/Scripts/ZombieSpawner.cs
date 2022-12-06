@@ -4,6 +4,11 @@ using UnityEngine;
 // 좀비 게임 오브젝트를 주기적으로 생성
 public class ZombieSpawner : MonoBehaviour
 {
+    void Awake()
+    {
+        instance = this;
+    }
+
     void OnEnable()
     {
         wave = 0;
@@ -48,12 +53,19 @@ public class ZombieSpawner : MonoBehaviour
         zombie.transform.position = spawnPoint.position;
         zombie.transform.rotation = spawnPoint.rotation;
         zombie.Setup(zombieDatas[Random.Range(0, zombieDatas.Length)]);
+        zombie.gameObject.SetActive(true);
+        zombies.Add(zombie);
+
+        zombie.onDeath += () => zombies.Remove(zombie);
+        zombie.onDeath += () => ObjectPool.instance.ReturnZombie(zombie, 10f);
+        zombie.onDeath += () => GameManager.instance.AddScore(100);
     }
 
-    public Zombie zombiePrefab; // 생성할 좀비 원본 프리팹
+    public static ZombieSpawner instance = null;
+
     public ZombieData[] zombieDatas; // 사용할 좀비 셋업 데이터들
     public Transform[] spawnPoints; // 좀비 AI를 소환할 위치들
 
-    List<Zombie> zombies = new List<Zombie>(); // 생성된 좀비들을 담는 리스트
+    HashSet<Zombie> zombies = new HashSet<Zombie>(); // 생성된 좀비들을 담는 리스트
     int wave; // 현재 웨이브
 }
