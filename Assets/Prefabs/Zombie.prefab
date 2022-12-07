@@ -205,9 +205,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingHealth: 100
-  enableColliders:
-  - {fileID: 5944675522560446130}
-  - {fileID: 5944675522560446129}
   damage: 20
   timeBetAttack: 0.5
   whatIsTarget:

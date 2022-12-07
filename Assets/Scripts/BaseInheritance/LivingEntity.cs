@@ -12,8 +12,6 @@ public class LivingEntity : PoolObject, IDamageable
         dead = false;
         // 체력을 시작 체력으로 초기화
         health = startingHealth;
-
-        EnableColliders(true);
     }
 
     // 데미지를 입는 기능
@@ -48,18 +46,8 @@ public class LivingEntity : PoolObject, IDamageable
         dead = true;
     }
 
-    protected void EnableColliders(bool on)
-    {
-        for (int i = 0; i < enableColliders.Length; i++)
-            enableColliders[i].enabled = on;
-    }
-
     public float startingHealth = 100f; // 시작 체력
     public float health { get; protected set; } // 현재 체력
     public bool dead { get; protected set; } // 사망 상태
     public event Action onDeath; // 사망시 발동할 이벤트
-
-    [SerializeField]
-    [Tooltip("켜졌다 꺼졌다 해야하는 콜라이더들")]
-    protected Collider[] enableColliders;
 }

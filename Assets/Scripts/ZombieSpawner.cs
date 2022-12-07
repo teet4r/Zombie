@@ -49,7 +49,7 @@ public class ZombieSpawner : MonoBehaviour
     void CreateZombie()
     {
         var spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-        var zombie = ObjectPool.instance.GetZombie();
+        var zombie = ObjectPool.instance.GetObject<Zombie>() as Zombie;
         zombie.transform.position = spawnPoint.position;
         zombie.transform.rotation = spawnPoint.rotation;
         zombie.Setup(zombieDatas[Random.Range(0, zombieDatas.Length)]);
@@ -57,7 +57,7 @@ public class ZombieSpawner : MonoBehaviour
         zombies.Add(zombie);
 
         zombie.onDeath += () => zombies.Remove(zombie);
-        zombie.onDeath += () => ObjectPool.instance.ReturnZombie(zombie, 10f);
+        zombie.onDeath += () => ObjectPool.instance.ReturnObject(zombie, 10f);
         zombie.onDeath += () => GameManager.instance.AddScore(100);
     }
 

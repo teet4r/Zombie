@@ -10,12 +10,15 @@ public class Zombie : LivingEntity
         // 초기화
         navMeshAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        colliders = GetComponents<Collider>();
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
 
+        for (int i = 0; i < colliders.Length; i++)
+            colliders[i].enabled = true;
         navMeshAgent.enabled = true;
 
         // 게임 오브젝트 활성화와 동시에 AI의 추적 루틴 시작
@@ -81,7 +84,8 @@ public class Zombie : LivingEntity
         base.Die();
 
         // 다른 AI를 방해하지 않도록 자신의 모든 콜라이더를 비활성화
-        EnableColliders(false);
+        for (int i = 0; i < colliders.Length; i++)
+            colliders[i].enabled = false;
 
         // AI 추적을 중지하고 navMesh 컴포넌트 비활성화
         navMeshAgent.isStopped = true;
@@ -139,6 +143,7 @@ public class Zombie : LivingEntity
     LivingEntity livingEntity2; // tryGetcomponent에서 쓰일 임시 변수
     NavMeshAgent navMeshAgent; // 경로 계산 AI 에이전트
     Animator animator; // 애니메이터 컴포넌트
+    Collider[] colliders;
 
     float lastAttackTime; // 마지막 공격 시점
     // 추적할 대상이 존재하는지 알려주는 프로퍼티

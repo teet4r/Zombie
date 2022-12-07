@@ -8,64 +8,83 @@ public class ObjectPool : MonoBehaviour
     void Awake()
     {
         instance = this;
-    }
 
-    #region Zombie
-    public Zombie GetZombie()
-    {
-        if (zombieQ.Count == 0)
-        {
-            var zombie = Instantiate(zombiePrefab);
-            zombie.gameObject.SetActive(false);
-            return zombie;
-        }
-        return zombieQ.Dequeue();
+        Initialize();
     }
-
-    public void ReturnZombie(Zombie zombie, float time)
-    {
-        if (zombie == null) return;
-        StartCoroutine(_ReturnZombie(zombie, Mathf.Max(time, 0f)));
-    }
-
-    IEnumerator _ReturnZombie(Zombie zombie, float time)
-    {
-        yield return new WaitForSeconds(time);
-        zombie.gameObject.SetActive(false);
-        zombieQ.Enqueue(zombie);
-    }
-    #endregion
 
     public PoolObject GetObject<T>()
     {
         var typeName = typeof(T).Name;
         if (!dict.ContainsKey(typeName))
             return null;
-        return null;
+
+        if (pools[typeName].Count == 0)
+        {
+            var clone = Instantiate(dict[typeName]);
+            clone.gameObject.SetActive(false);
+            return clone;
+        }
+        return pools[typeName].Dequeue();
+    }
+
+    public PoolObject GetObject(PoolType type)
+    {
+        var typeName = poolTypeNames[(int)type];
+        if (pools[typeName].Count == 0)
+        {
+            var clone = Instantiate(dict[typeName]);
+            clone.gameObject.SetActive(false);
+            return clone;
+        }
+        return pools[typeName].Dequeue();
+    }
+
+    public void ReturnObject(PoolObject obj, float time)
+    {
+        if (obj == null)
+            return;
+        var typeName = obj.GetType().Name;
+        if (!dict.ContainsKey(typeName))
+            return;
+        StartCoroutine(_ReturnObject(obj, time, typeName));
+    }
+
+    IEnumerator _ReturnObject(PoolObject obj, float time, string typeName)
+    {
+        yield return new WaitForSeconds(time);
+        obj.gameObject.SetActive(false);
+        pools[typeName].Enqueue(obj);
     }
 
     void Initialize()
     {
         for (int i = 0; i < prefabs.Length; i++)
-            dict.Add(prefabs[i].GetType().Name, prefabs[i]);
+        {
+            var typeName = prefabs[i].GetType().Name;
+            dict.Add(typeName, prefabs[i]);
+            pools.Add(typeName, new Queue<PoolObject>());
+        }
     }
 
     public static ObjectPool instance = null;
 
     [Header("Prefabs")]
     [SerializeField]
-    Zombie zombiePrefab;
-    [SerializeField]
-    Coin coinPrefab;
-    [SerializeField]
-    AmmoPack ammoPackPrefab;
-    [SerializeField]
-    HealthPack healthPackPrefab;
-
-    [SerializeField]
     PoolObject[] prefabs;
 
+    /// <summary>
+    /// PoolType과 순서 및 이름 동기화.
+    /// 인스펙터와는 달라도 됨
+    /// </summary>
+    string[] poolTypeNames =
+    {
+        "Zombie"
+    };
     Dictionary<string, PoolObject> dict = new Dictionary<string, PoolObject>();
+    Dictionary<string, Queue<PoolObject>> pools = new Dictionary<string, Queue<PoolObject>>();
+}
 
-    Queue<Zombie> zombieQ = new Queue<Zombie>();
+public enum PoolType
+{
+    Zombie
 }
