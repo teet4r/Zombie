@@ -478,6 +478,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabs:
   - {fileID: 5944675522560446095, guid: 1a001145d71c23a47bb66acdc0f84caa, type: 3}
+  - {fileID: 114448886708327992, guid: c90bf41c504e541b98989b07b736097c, type: 3}
+  - {fileID: 114502712827456512, guid: 4229c84aca58549a586e9bb7aaae97c4, type: 3}
+  - {fileID: 114435103929562082, guid: b4e7df10a580e4a1a88a79995b741816, type: 3}
+  itemObjects:
+  - {fileID: 114448886708327992, guid: c90bf41c504e541b98989b07b736097c, type: 3}
+  - {fileID: 114435103929562082, guid: b4e7df10a580e4a1a88a79995b741816, type: 3}
+  - {fileID: 114502712827456512, guid: 4229c84aca58549a586e9bb7aaae97c4, type: 3}
 --- !u!1 &586150953
 GameObject:
   m_ObjectHideFlags: 0
@@ -1623,11 +1630,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4008910903277257114, guid: aff5240e9a0939f43a27b097905d113d,
-        type: 3}
-      propertyPath: ammoRemain
-      value: 200
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aff5240e9a0939f43a27b097905d113d, type: 3}

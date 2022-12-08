@@ -136,7 +136,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c89b675e33d18400487c95e533fad164, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ammo: 100
+  ammo: 50
+  errorMaxRate: 20
 --- !u!1 &1496639653374222
 GameObject:
   m_ObjectHideFlags: 0

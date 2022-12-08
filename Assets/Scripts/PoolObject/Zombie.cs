@@ -35,20 +35,18 @@ public class Zombie : LivingEntity
     {
         // 트리거 충돌한 상대방 게임 오브젝트가 추적 대상이라면 공격 실행
         if (!dead && Time.time >= lastAttackTime + timeBetAttack)
-        {
-            if (other.TryGetComponent(out livingEntity2))
-                if (livingEntity2 == targetEntity)
+            if (other.TryGetComponent(out LivingEntity livingEntity))
+                if (livingEntity == targetEntity)
                 {
                     lastAttackTime = Time.time;
 
                     // 상대방의 피격 위치와 피격 방향을 근삿값으로 계산
-                    livingEntity2.OnDamage(
+                    livingEntity.OnDamage(
                         damage,
                         other.ClosestPoint(transform.position),
                         transform.position - other.transform.position
                     );
                 }
-        }
     }
 
     // 좀비 AI의 초기 스펙을 결정하는 셋업 메서드
@@ -114,10 +112,10 @@ public class Zombie : LivingEntity
                 // 단, whatIsTarget 레이어를 가진 콜라이더만 가져오도록 필터링
                 var colliders = Physics.OverlapSphere(transform.position, 20f, whatIsTarget);
                 for (int i = 0; i < colliders.Length; i++)
-                    if (colliders[i].TryGetComponent(out livingEntity1))
-                        if (!livingEntity1.dead)
+                    if (colliders[i].TryGetComponent(out LivingEntity livingEntity))
+                        if (!livingEntity.dead)
                         {
-                            targetEntity = livingEntity1;
+                            targetEntity = livingEntity;
                             break;
                         }
             }
@@ -139,8 +137,6 @@ public class Zombie : LivingEntity
     float updatePathRate = 0.25f;
 
     LivingEntity targetEntity; // 추적 대상
-    LivingEntity livingEntity1; // tryGetcomponent에서 쓰일 임시 변수
-    LivingEntity livingEntity2; // tryGetcomponent에서 쓰일 임시 변수
     NavMeshAgent navMeshAgent; // 경로 계산 AI 에이전트
     Animator animator; // 애니메이터 컴포넌트
     Collider[] colliders;
