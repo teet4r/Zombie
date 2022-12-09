@@ -12,6 +12,7 @@ public class ZombieSpawner : MonoBehaviour
     void OnEnable()
     {
         wave = 0;
+        zombieCount = 0;
     }
 
     void Update()
@@ -20,8 +21,7 @@ public class ZombieSpawner : MonoBehaviour
         if (GameManager.instance != null && GameManager.instance.isGameover)
             return;
 
-        // 좀비를 모두 물리친 경우 다음 스폰 실행
-        if (zombies.Count <= 0)
+        if (zombieCount <= 0)
             SpawnWave();
 
         // UI 갱신
@@ -32,7 +32,7 @@ public class ZombieSpawner : MonoBehaviour
     void UpdateUI()
     {
         // 현재 웨이브와 남은 적 수 표시
-        UIManager.instance.UpdateWaveText(wave, zombies.Count);
+        UIManager.instance.UpdateWaveText(wave, zombieCount);
     }
 
     // 현재 웨이브에 맞춰 좀비들을 생성
@@ -49,26 +49,20 @@ public class ZombieSpawner : MonoBehaviour
     void CreateZombie()
     {
         var spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-        if (ObjectPool.instance.GetObject(typeof(Zombie).Name, out PoolObject obj))
-        {
-            var zombie = obj as Zombie;
-            zombie.transform.position = spawnPoint.position;
-            zombie.transform.rotation = spawnPoint.rotation;
-            zombie.Setup(zombieDatas[Random.Range(0, zombieDatas.Length)]);
-            zombie.gameObject.SetActive(true);
-            zombies.Add(zombie);
-
-            zombie.onDeath += () => zombies.Remove(zombie);
-            zombie.onDeath += () => ObjectPool.instance.ReturnObject(zombie, 10f);
-            zombie.onDeath += () => GameManager.instance.AddScore(100);
-        }
+        var zombie = ObjectPool.instance.GetObject(DerivedType.Zombie) as Zombie;
+        zombie.transform.position = spawnPoint.position;
+        zombie.transform.rotation = spawnPoint.rotation;
+        zombie.Setup(zombieDatas[Random.Range(0, zombieDatas.Length)]);
+        zombie.gameObject.SetActive(true);
+        ++zombieCount;
     }
 
     public static ZombieSpawner instance = null;
 
     public ZombieData[] zombieDatas; // 사용할 좀비 셋업 데이터들
     public Transform[] spawnPoints; // 좀비 AI를 소환할 위치들
+    public float spawnTime = 20f;
+    public int zombieCount;
 
-    HashSet<Zombie> zombies = new HashSet<Zombie>(); // 생성된 좀비들을 담는 리스트
     int wave; // 현재 웨이브
 }

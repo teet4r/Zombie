@@ -50,9 +50,11 @@ public class Gun : MonoBehaviour
         // 탄알이 맞은 곳을 저장할 변수
         Vector3 hitPosition = Vector3.zero;
 
+        var lookDir = (PlayerMovement.instance.lookingPoint - fireTransform.position).normalized;
+        var revisedLookDir = new Vector3(lookDir.x, 0f, lookDir.z).normalized;
         // Raycast(시작 지점, 방향, 충돌 정보 컨테이너, 사정거리)
         // 레이가 어떤 물체와 충돌한 경우
-        if (Physics.Raycast(fireTransform.position, (PlayerMovement.instance.lookingPoint - fireTransform.position).normalized, out hit, fireDistance))
+        if (Physics.Raycast(fireTransform.position, revisedLookDir, out hit, fireDistance))
         {
             // 충돌한 상대방으로부터 IDamageable 오브젝트 가져오기 시도
             if (hit.collider.TryGetComponent(out IDamageable target))
@@ -63,7 +65,7 @@ public class Gun : MonoBehaviour
         // 레이가 다른 물체와 충돌하지 않았다면
         // 탄알이 최대 사정거리까지 날아갔을 때의 위치를 충돌 위치로 사용
         else
-            hitPosition = (PlayerMovement.instance.lookingPoint - fireTransform.position).normalized * fireDistance;
+            hitPosition = revisedLookDir * fireDistance;
         //hitPosition = fireTransform.position + fireTransform.forward * fireDistance;
 
         StartCoroutine(ShotEffect(hitPosition));

@@ -91,6 +91,10 @@ public class Zombie : LivingEntity
 
         animator.SetTrigger(AnimatorID.Trigger.DIE);
         SoundManager.instance.sfxAudio.Play(Sfx.ZombieDie);
+
+        --ZombieSpawner.instance.zombieCount;
+        GameManager.instance.AddScore(100);
+        ObjectPool.instance.ReturnObject(this, 10f);
     }
 
     // 주기적으로 추적할 대상의 위치를 찾아 경로 갱신

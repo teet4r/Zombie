@@ -36,11 +36,13 @@ public class ItemSpawner : MonoBehaviour
         spawnPosition += Vector3.up * 0.5f;
 
         // 아이템 중 하나를 무작위로 골라 랜덤 위치에 생성
-        GameObject selectedItem = items[Random.Range(0, items.Length)];
-        GameObject item = Instantiate(selectedItem, spawnPosition, Quaternion.identity);
+        var item = ObjectPool.instance.GetRandomObject(BaseType.ItemObject) as ItemObject;
+        item.transform.position = spawnPosition;
+        item.transform.rotation = Quaternion.identity;
+        item.gameObject.SetActive(true);
 
         // 생성된 아이템을 5초 뒤에 파괴
-        Destroy(item, 5f);
+        ObjectPool.instance.ReturnObject(item, 5f);
     }
 
     // 내비메시 위의 랜덤한 위치를 반환하는 메서드
@@ -61,7 +63,6 @@ public class ItemSpawner : MonoBehaviour
         return hit.position;
     }
 
-    public GameObject[] items; // 생성할 아이템들
     public Transform playerTransform; // 플레이어의 트랜스폼
 
     public float maxDistance = 5f; // 플레이어 위치로부터 아이템이 배치될 최대 반경

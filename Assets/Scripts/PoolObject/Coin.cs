@@ -3,7 +3,7 @@ using UnityEngine;
 // 게임 점수를 증가시키는 아이템
 public class Coin : ItemObject
 {
-    public override void Use()
+    public override void Use(GameObject target)
     {
         // 게임 매니저로 접근해 점수 추가
         GameManager.instance.AddScore(score);

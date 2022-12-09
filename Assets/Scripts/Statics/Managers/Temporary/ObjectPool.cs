@@ -4,10 +4,36 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
+/// DerivedType, BaseType과 순서 및 이름 동기화
+/// </summary>
+public partial class ObjectPool : MonoBehaviour
+{
+    readonly string[] derivedNames =
+    {
+        "Zombie", "AmmoPack", "HealthPack", "Coin"
+    };
+    readonly string[] baseNames =
+    {
+        "PoolObject", "ItemObject", "LivingEntity"
+    };
+}
+
+public enum DerivedType
+{
+    Zombie, AmmoPack, HealthPack, Coin
+}
+
+public enum BaseType
+{
+    PoolObject, ItemObject, LivingEntity
+}
+
+
+/// <summary>
 /// PoolObject 타입의 프리팹들을 관리하는 오브젝트 풀
 /// PoolObject 타입을 상속하기만 하면 된다.
 /// </summary>
-public class ObjectPool : MonoBehaviour
+public partial class ObjectPool : MonoBehaviour
 {
     void Awake()
     {
@@ -16,50 +42,29 @@ public class ObjectPool : MonoBehaviour
         Initialize();
     }
 
-    /// <summary>
-    /// PoolObject타입만 반환
-    /// </summary>
-    /// <param name="typeName"></param>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public bool GetObject(string typeName, out PoolObject obj)
+    public PoolObject GetObject(DerivedType type)
     {
-        if (!dict.ContainsKey(typeName))
-        {
-            obj = null;
-            return false;
-        }
+        var typeName = derivedNames[(int)type];
+        if (!pools.ContainsKey(typeName))
+            throw new Exception("This type doesn't exist!");
 
         if (pools[typeName].Count == 0)
         {
             var clone = Instantiate(dict[typeName]);
             clone.gameObject.SetActive(false);
-            obj = clone;
+            return clone;
         }
-        else
-            obj = pools[typeName].Dequeue();
-        return true;
+        return pools[typeName].Dequeue();
     }
 
-    public bool GetRandomObject(string typeName, out PoolObject obj)
+    public PoolObject GetRandomObject(BaseType type)
     {
-        if (!typePool.ContainsKey(typeName))
-        {
-            obj = null;
-            return false;
-        }
+        var typeName = baseNames[(int)type];
+        if (!typePools.ContainsKey(typeName))
+            throw new Exception("This type doesn't exist!");
 
-        int idx = UnityEngine.Random.Range(0, typePool[typeName].Count);
-        if (GetObject(typePool[typeName][idx], out PoolObject _obj))
-        {
-            obj = _obj;
-            return true;
-        }
-        else
-        {
-            obj = null;
-            return false;
-        }
+        int idx = UnityEngine.Random.Range(0, typePools[typeName].Count);
+        return GetObject(typePools[typeName][idx]);
     }
 
     /// <summary>
@@ -70,17 +75,17 @@ public class ObjectPool : MonoBehaviour
     /// <param name="time"></param>
     public void ReturnObject(PoolObject obj, float time = 0f)
     {
-        if (obj == null)
-            return;
-        var typeName = obj.GetType().Name;
-        if (!dict.ContainsKey(typeName))
-            return;
-        StartCoroutine(_ReturnObject(obj, time, typeName));
+        StartCoroutine(_ReturnObject(obj, time));
     }
 
-    IEnumerator _ReturnObject(PoolObject obj, float time, string typeName)
+    IEnumerator _ReturnObject(PoolObject obj, float time)
     {
         yield return new WaitForSeconds(time);
+        if (obj == null)
+            yield break;
+        var typeName = obj.GetType().Name;
+        if (!dict.ContainsKey(typeName))
+            yield break;
         obj.gameObject.SetActive(false);
         pools[typeName].Enqueue(obj);
     }
@@ -96,12 +101,26 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
+    PoolObject GetObject(string typeName)
+    {
+        if (!dict.ContainsKey(typeName))
+            return null;
+
+        if (pools[typeName].Count == 0)
+        {
+            var clone = Instantiate(dict[typeName]);
+            clone.gameObject.SetActive(false);
+            return clone;
+        }
+        return pools[typeName].Dequeue();
+    }
+
     void SaveAllTypes(PoolObject obj, Type objType)
     {
         var objTypeName = objType.Name;
-        if (!typePool.ContainsKey(objTypeName))
-            typePool.Add(objTypeName, new List<string>());
-        typePool[objTypeName].Add(objTypeName);
+        if (!typePools.ContainsKey(objTypeName))
+            typePools.Add(objTypeName, new List<string>());
+        typePools[objTypeName].Add(obj.GetType().Name);
 
         if (objTypeName.CompareTo(poolObject) == 0)
             return;
@@ -114,9 +133,15 @@ public class ObjectPool : MonoBehaviour
     [SerializeField]
     PoolObject[] prefabs;
 
-    readonly string poolObject = typeof(PoolObject).Name;
-
     Dictionary<string, PoolObject> dict = new Dictionary<string, PoolObject>();
     Dictionary<string, Queue<PoolObject>> pools = new Dictionary<string, Queue<PoolObject>>();
-    Dictionary<string, List<string>> typePool = new Dictionary<string, List<string>>();
+    Dictionary<string, List<string>> typePools = new Dictionary<string, List<string>>();
+
+    readonly string poolObject = typeof(PoolObject).Name;
 }
+
+/*
+ *  최상위 타입                          PoolObject
+ *  하위 타입        ItemObject                    LivingEntity
+ *  하위 타입        AmmoPack HealthPack Coin      Zombie
+ */

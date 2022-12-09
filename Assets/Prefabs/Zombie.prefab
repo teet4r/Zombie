@@ -204,6 +204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1335f80b57e1564281355161c54162b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  returnTime: 10
   startingHealth: 100
   damage: 20
   timeBetAttack: 0.5
