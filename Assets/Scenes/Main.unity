@@ -299,7 +299,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 131749549}
-  m_LocalRotation: {x: 0.52138436, y: -0.000000007341291, z: 0.0000000044855684, w: 0.85332197}
+  m_LocalRotation: {x: 0.52138436, y: 0.0000000073412907, z: -0.0000000044855684,
+    w: 0.85332197}
   m_LocalPosition: {x: 0, y: 20, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -707,7 +708,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 666287716}
-  m_LocalRotation: {x: 0.52138436, y: -0.000000007341291, z: 0.0000000044855684, w: 0.85332197}
+  m_LocalRotation: {x: 0.52138436, y: 0.0000000073412907, z: -0.0000000044855684,
+    w: 0.85332197}
   m_LocalPosition: {x: 0, y: 20, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1509,11 +1511,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4008910901472660807, guid: aff5240e9a0939f43a27b097905d113d,
         type: 3}
-      propertyPath: shotPoint
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4008910901472660807, guid: aff5240e9a0939f43a27b097905d113d,
-        type: 3}
       propertyPath: currentCamera
       value: 
       objectReference: {fileID: 666287718}
@@ -1577,10 +1574,92 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4008910903277257114, guid: aff5240e9a0939f43a27b097905d113d,
-        type: 3}
-      propertyPath: shotPoint
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aff5240e9a0939f43a27b097905d113d, type: 3}
+--- !u!1 &4008910903277257127 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4008910901472758746, guid: aff5240e9a0939f43a27b097905d113d,
+    type: 3}
+  m_PrefabInstance: {fileID: 4008910903277257126}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4008910903277257128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4008910903277257127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0044ecc2b96c8374e894ceb9122fa8e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4008910903277257129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4008910903277257127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 1
+    SynchronizeType: 1
+    Name: Move
+  - Type: 9
+    SynchronizeType: 1
+    Name: Reload
+  - Type: 9
+    SynchronizeType: 0
+    Name: Die
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
+  - SynchronizeType: 0
+    LayerIndex: 1
+--- !u!114 &4008910903277257130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4008910903277257127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 0
+--- !u!114 &4008910903277257131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4008910903277257127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 0
+  ObservedComponents:
+  - {fileID: 4008910903277257130}
+  - {fileID: 4008910903277257129}
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0

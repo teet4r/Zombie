@@ -1,12 +1,14 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
 
 // 플레이어 캐릭터를 조작하기 위한 사용자 입력을 감지
 // 감지된 입력값을 다른 컴포넌트들이 사용할 수 있도록 제공
-public class PlayerInput : MonoBehaviour
+public class PlayerInput : MonoBehaviourPun
 {
     // 매프레임 사용자 입력을 감지
     void Update()
     {
+        if (!photonView.IsMine) return;
         if (GameManager.instance == null) return;
         // 게임오버 상태에서는 사용자 입력을 감지하지 않는다
         if (GameManager.instance.isGameover)

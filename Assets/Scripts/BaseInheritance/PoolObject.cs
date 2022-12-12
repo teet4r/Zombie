@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public class PoolObject : MonoBehaviour
+public class PoolObject : MonoBehaviourPun
 {
     
 }
