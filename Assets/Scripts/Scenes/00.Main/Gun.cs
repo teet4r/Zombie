@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using UnityEngine;
 
 // 총을 구현
-public class Gun : MonoBehaviour
+public class Gun : MonoBehaviourPun, IPunObservable
 {
     void Awake()
     {
@@ -42,8 +43,53 @@ public class Gun : MonoBehaviour
         return true;
     }
 
+    // 남은 탄알을 추가하는 메서드
+    [PunRPC]
+    public void AddAmmo(int ammo)
+    {
+        ammoRemain += ammo;
+    }
+
+    /// <summary>
+    /// 주기적으로 자동 실행되는 동기화 메서드
+    /// </summary>
+    /// <param name="stream"></param>
+    /// <param name="info"></param>
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        // 로컬 오브젝트라면 쓰기 모드가 됨
+        if (stream.IsWriting)
+        {
+            // 네트워크를 통해 보냄
+            stream.SendNext(ammoRemain);
+            stream.SendNext(magAmmo);
+            stream.SendNext(state);
+        }
+        else // 리모트 오브젝트라면 읽기 모드가 됨
+        {
+            // 네트워크를 통해 받음
+            ammoRemain = (int)stream.ReceiveNext();
+            magAmmo = (int)stream.ReceiveNext();
+            state = (State)stream.ReceiveNext();
+        }
+    }
+
     // 실제 발사 처리
     void Shot()
+    {
+        // 실제 발사 처리는 호스트에 대리함
+        photonView.RPC("ShotProcessOnServer", RpcTarget.MasterClient);
+
+        magAmmo--;
+        if (magAmmo <= 0)
+            state = State.Empty;
+    }
+
+    /// <summary>
+    /// 호스트에서 실행되는 실제 발사 처리
+    /// </summary>
+    [PunRPC]
+    void ShotProcessOnServer()
     {
         // 레이캐스트에 의한 충돌 정보를 저장하는 컨테이너
         RaycastHit hit;
@@ -68,10 +114,19 @@ public class Gun : MonoBehaviour
             hitPosition = revisedLookDir * fireDistance;
         //hitPosition = fireTransform.position + fireTransform.forward * fireDistance;
 
+        // 발사 이펙트 재생.
+        // 이펙트 재생은 모든 클라이언트에서 실행
+        photonView.RPC("ShotEffectProcessOnClients", RpcTarget.All, hitPosition);
+    }
+
+    /// <summary>
+    /// 이펙트 재생 코루틴을 랩핑한 메서드
+    /// </summary>
+    /// <param name="hitPosition"></param>
+    [PunRPC]
+    void ShotEffectProcessOnClients(Vector3 hitPosition)
+    {
         StartCoroutine(ShotEffect(hitPosition));
-        magAmmo--;
-        if (magAmmo <= 0)
-            state = State.Empty;
     }
 
     // 발사 이펙트와 소리를 재생하고 탄알 궤적을 그림

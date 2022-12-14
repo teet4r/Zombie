@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI; // AI, 내비게이션 시스템 관련 코드 가져오기
 
@@ -21,18 +22,28 @@ public class Zombie : LivingEntity
             colliders[i].enabled = true;
         navMeshAgent.enabled = true;
 
+        // 호스트가 아니라면 AI의 추적 루틴을 실행하지 않음
+        if (!PhotonNetwork.IsMasterClient) return;
+
         // 게임 오브젝트 활성화와 동시에 AI의 추적 루틴 시작
         StartCoroutine(UpdatePath());
     }
 
     void Update()
     {
+        // 호스트가 아니라면 애니메이션의 파라미터를 직접 갱신하지 않음
+        // 호스트가 파라미터를 갱신하면 클라이언트에 자동으로 전달되기 때문
+        if (!PhotonNetwork.IsMasterClient) return;
+
         // 추적 대상의 존재 여부에 따라 다른 애니메이션 재생
         animator.SetBool(AnimatorID.Bool.HAS_TARGET, hasTarget);
     }
 
     void OnTriggerStay(Collider other)
     {
+        // 호스트가 아니라면 공격 실행 불가
+        if (!PhotonNetwork.IsMasterClient) return;
+
         // 트리거 충돌한 상대방 게임 오브젝트가 추적 대상이라면 공격 실행
         if (!dead && Time.time >= lastAttackTime + timeBetAttack)
             if (other.TryGetComponent(out LivingEntity livingEntity))
@@ -50,16 +61,18 @@ public class Zombie : LivingEntity
     }
 
     // 좀비 AI의 초기 스펙을 결정하는 셋업 메서드
-    public void Setup(ZombieData zombieData)
+    [PunRPC]
+    public void Setup(float health, float damage, float speed, Color skinColor)
     {
-        startingHealth = zombieData.health;
-        health = startingHealth;
-        damage = zombieData.damage;
-        navMeshAgent.speed = zombieData.speed;
-        m_renderer.material.color = zombieData.skinColor;
+        startingHealth = health;
+        this.health = startingHealth;
+        this.damage = damage;
+        navMeshAgent.speed = speed;
+        m_renderer.material.color = skinColor;
     }
 
     // 데미지를 입었을 때 실행할 처리
+    [PunRPC]
     public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
     {
         if (dead) return;

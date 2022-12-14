@@ -37,6 +37,7 @@ public class LivingEntity : PoolObject, IDamageable
     [PunRPC]
     public virtual void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal)
     {
+        // 마스터 클라이언트(서버)인 경우 실행
         if (PhotonNetwork.IsMasterClient)
         {
             // 데미지만큼 체력 감소
