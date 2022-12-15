@@ -9,8 +9,6 @@ public class PlayerMovement : MonoBehaviourPun
 {
     void Awake()
     {
-        instance = this;
-
         playerInput = GetComponent<PlayerInput>();
         rigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
@@ -66,14 +64,6 @@ public class PlayerMovement : MonoBehaviourPun
             transform.LookAt(new Vector3(m_lookingPoint.x, transform.position.y, m_lookingPoint.z));
         }
     }
-
-    //void Rotate()
-    //{
-    //    var turnDistance = playerInput.rotate * rotateSpeed * Time.fixedDeltaTime;
-    //    rigid.rotation *= Quaternion.Euler(0f, turnDistance, 0f);
-    //}
-
-    public static PlayerMovement instance = null;
 
     public float moveSpeed = 5f; // 앞뒤 움직임의 속도
     public float rotateSpeed = 180f; // 좌우 회전 속도

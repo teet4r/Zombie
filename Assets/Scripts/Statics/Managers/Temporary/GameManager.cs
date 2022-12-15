@@ -1,11 +1,34 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // 점수와 게임 오버 여부를 관리하는 게임 매니저
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourPunCallbacks, IPunObservable
 {
     void Awake()
     {
         instance = this;
+    }
+
+    void Start()
+    {
+        var randomSpawnPos = Random.insideUnitSphere * 5f;
+        randomSpawnPos.y = 0f;
+
+        // 네트워크상의 모든 클라이언트에서 실행.
+        // 해당 게임 오브젝트의 주도권은 생성 메서드를 직접 실행한 클라이언트에 있음.
+        PhotonNetwork.Instantiate(playerPrefab.name, randomSpawnPos, Quaternion.identity);
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            PhotonNetwork.LeaveRoom();
+    }
+
+    public override void OnLeftRoom()
+    {
+        SceneManager.LoadScene("Lobby");
     }
 
     // 점수를 추가하고 UI 갱신
@@ -28,7 +51,18 @@ public class GameManager : MonoBehaviour
         UIManager.instance.SetActiveGameoverUI(true);
     }
 
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        // 로컬 오브젝트라면 쓰기 부분이 실행됨
+        if (stream.IsWriting)
+            stream.SendNext(score);
+        // 리모트 오브젝트라면 읽기 부분이 실행됨
+        else
+            UIManager.instance.UpdateScoreText((int)stream.ReceiveNext());
+    }
+
     public static GameManager instance = null;
+    public GameObject playerPrefab;
     public bool isGameover { get; private set; } // 게임 오버 상태
 
     int score = 0; // 현재 게임 점수

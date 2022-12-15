@@ -583,6 +583,7 @@ MonoBehaviour:
   ammoRemain: 100
   magAmmo: 0
   fireDistance: 50
+  _playerMovement: {fileID: 0}
 --- !u!114 &1129790706
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -107,7 +107,15 @@ public class Zombie : LivingEntity
 
         --ZombieSpawner.instance.zombieCount;
         GameManager.instance.AddScore(100);
-        ObjectPool.instance.ReturnObject(this, 10f);
+        StartCoroutine(DestroyAfter(gameObject, 10f));
+    }
+
+    IEnumerator DestroyAfter(GameObject target, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (target != null)
+            PhotonNetwork.Destroy(target);
     }
 
     // 주기적으로 추적할 대상의 위치를 찾아 경로 갱신

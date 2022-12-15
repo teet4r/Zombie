@@ -1004,6 +1004,7 @@ GameObject:
   m_Component:
   - component: {fileID: 988918191}
   - component: {fileID: 988918192}
+  - component: {fileID: 988918193}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1038,6 +1039,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e090a9750849f49c282494b652e54999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 4008910901472758746, guid: aff5240e9a0939f43a27b097905d113d,
+    type: 3}
+--- !u!114 &988918193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 988918190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 988918192}
+  sceneViewId: 7
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1195492782
 GameObject:
   m_ObjectHideFlags: 0
@@ -1048,6 +1074,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1195492783}
   - component: {fileID: 1195492784}
+  - component: {fileID: 1195492785}
   m_Layer: 0
   m_Name: ItemSpawner
   m_TagString: Untagged
@@ -1082,10 +1109,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ee0596fa41f143638acc3a9bf74dfa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTransform: {fileID: 0}
+  items:
+  - {fileID: 114448886708327992, guid: c90bf41c504e541b98989b07b736097c, type: 3}
+  - {fileID: 114502712827456512, guid: 4229c84aca58549a586e9bb7aaae97c4, type: 3}
+  - {fileID: 114435103929562082, guid: b4e7df10a580e4a1a88a79995b741816, type: 3}
   maxDistance: 5
   timeBetSpawnMax: 7
   timeBetSpawnMin: 2
+--- !u!114 &1195492785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195492782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 0
+  OwnershipTransfer: 0
+  observableSearch: 0
+  ObservedComponents:
+  - {fileID: 0}
+  sceneViewId: 9
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &1260069158
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1249,6 +1302,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1398433073}
   - component: {fileID: 1398433074}
+  - component: {fileID: 1398433075}
   m_Layer: 0
   m_Name: ZombieSpawner
   m_TagString: Untagged
@@ -1283,6 +1337,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caf60ce9abab742a98a648d974181076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  zombiePrefab: {fileID: 5944675522560446095, guid: 1a001145d71c23a47bb66acdc0f84caa,
+    type: 3}
   zombieDatas:
   - {fileID: 11400000, guid: c73930afeec611e43a610ae4ecb9dcf7, type: 2}
   - {fileID: 11400000, guid: cb6b72a656972854cb6c7d53e1920e85, type: 2}
@@ -1294,6 +1350,29 @@ MonoBehaviour:
   - {fileID: 248778362}
   spawnTime: 20
   zombieCount: 0
+--- !u!114 &1398433075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398433072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 1
+  OwnershipTransfer: 0
+  observableSearch: 0
+  ObservedComponents:
+  - {fileID: 1398433074}
+  sceneViewId: 8
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!4 &1589636419 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4786794668291628, guid: 5314e1f0757cf4cf79d58731d117e6cd,

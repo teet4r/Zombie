@@ -77,8 +77,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel(SceneName.MAIN);
     }
 
+    public void OnExitGame()
+    {
+        Application.Quit();
+    }
+
     public Text connectionInfoText; // 네트워크 정보를 표시할 텍스트
     public Button joinButton; // 룸 접속 버튼
+    public Button exitButton;
     
     string gameVersion = "1"; // 게임 버전
 }
